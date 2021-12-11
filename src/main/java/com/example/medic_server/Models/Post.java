@@ -51,6 +51,7 @@ public class Post {
         this.title = title;
         this.body = body;
         this.tags = tags;
+        this.date = LocalDateTime.now();
     }
 
     public void setTitle(String title) {
