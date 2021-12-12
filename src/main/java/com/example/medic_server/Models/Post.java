@@ -34,9 +34,7 @@ public class Post {
     private User user;
 
     @Column
-    @DateTimeFormat(pattern = "dd.MM.yyyy HH:mm", iso = DateTimeFormat.ISO.DATE_TIME)
-    @JsonFormat(pattern = "dd.MM.yyyy HH:mm")
-    private LocalDateTime date;
+    private String date;
 
     @ElementCollection
     private List<String> images;
@@ -50,7 +48,7 @@ public class Post {
         this.title = title;
         this.body = body;
         this.tags = tags;
-        this.date = LocalDateTime.now();
+        this.date = LocalDateTime.now().toString();
     }
 
     public void setTitle(String title) {
@@ -69,7 +67,7 @@ public class Post {
         this.user = user;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -97,7 +95,7 @@ public class Post {
         return user;
     }
 
-    public LocalDateTime getDate() {
+    public String getDate() {
         return date;
     }
 

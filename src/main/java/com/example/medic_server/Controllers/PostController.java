@@ -35,10 +35,16 @@ public class PostController {
         return ResponseEntity.ok(post);
     }
 
-    @RequestMapping(value="/delete", method = {RequestMethod.DELETE, RequestMethod.GET})
-    @ResponseStatus(HttpStatus.OK)
-    void deletePostById(@RequestParam UUID id){
-        postDAO.deleteById(id);
+    @GetMapping("/delete")
+    ResponseEntity<Boolean> deletePostById(@RequestParam UUID id){
+        if (postDAO.findByIdLike(id) != null) {
+            postDAO.deleteById(id);
+            System.out.println(id);
+            return ResponseEntity.ok(true);
+        } else {
+            System.out.println("Not found");
+            return ResponseEntity.ok(false);
+        }
     }
 
     @GetMapping("/byId")
