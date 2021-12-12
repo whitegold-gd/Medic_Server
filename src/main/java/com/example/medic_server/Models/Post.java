@@ -42,7 +42,6 @@ public class Post {
     private List<String> images;
 
     public Post() {
-        id = UUID.randomUUID();
         images = new ArrayList<>();
     }
 

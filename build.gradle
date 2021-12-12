@@ -33,10 +33,14 @@ dependencies {
 
 	//JWT
 	implementation 'org.springframework.security:spring-security-jwt:1.1.1.RELEASE'
-
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 
+	//Validation
 	implementation 'javax.validation:validation-api:2.0.1.Final'
+
+	//Retrofit
+	implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+	implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 }
 
 test {

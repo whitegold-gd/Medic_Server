@@ -28,18 +28,27 @@ public class User {
     @Column
     private String password;
 
-    @OneToOne(mappedBy = "user")
-    @JsonBackReference
-    private UserAccountInfo userAccountInfo;
+    @Column
+    private User.Role role;
+
+    public enum Role {
+        Administrator,
+        Moderator,
+        User,
+        Guest
+    }
 
     public User(){
         id = UUID.randomUUID();
     }
 
-    public User(String name, String lastName) {
+    public User(String name, String lastName, String email, String password, User.Role role) {
         this();
         this.firstName = name;
         this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.role = role;
     }
 
     public UUID getId() {
@@ -58,10 +67,6 @@ public class User {
         return email;
     }
 
-    public String getPassword() {
-        return password;
-
-    }
     public void setId(UUID id) {
         this.id = id;
     }
@@ -78,15 +83,19 @@ public class User {
         this.email = email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public UserAccountInfo getUserAccountInfo() {
-        return userAccountInfo;
+    public Role getRole() {
+        return role;
     }
 
-    public void setUserAccountInfo(UserAccountInfo userAccountInfo) {
-        this.userAccountInfo = userAccountInfo;
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

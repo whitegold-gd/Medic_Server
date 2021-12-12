@@ -1,9 +1,7 @@
 package com.example.medic_server.Controllers;
 
-import com.example.medic_server.Database.DAO.UserAccountInfoDAO;
 import com.example.medic_server.Database.DAO.UserDAO;
 import com.example.medic_server.Models.User;
-import com.example.medic_server.Models.UserAccountInfo;
 import com.example.medic_server.Secure.Services.JWTUtils;
 import com.example.medic_server.Secure.Services.MyUserDetailsService;
 import org.slf4j.LoggerFactory;
@@ -33,17 +31,14 @@ public class AuthController {
     private JWTUtils jwtUtils;
 
     @Autowired
-    private UserAccountInfoDAO userAccountInfoDAO;
-
-    @Autowired
     private UserDAO userDAO;
 
     @PostMapping("auth")
-    public ResponseEntity<String> authentication(@RequestBody UserAccountInfo body) throws Exception {
+    public ResponseEntity<String> authentication(@RequestBody User body) throws Exception {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            body.getLogin(),
+                            body.getEmail(),
                             body.getPassword()
                     )
             );
@@ -55,7 +50,7 @@ public class AuthController {
         }
 
         final UserDetails userDetails = userDetailsService
-                .loadUserByUsername(body.getLogin());
+                .loadUserByUsername(body.getEmail());
 
         if (userDetails != null) {
             final String token = jwtUtils.generateToken(userDetails);
@@ -67,17 +62,19 @@ public class AuthController {
     }
 
     @PostMapping("register")
-    public ResponseEntity<String> registration(@RequestBody UserAccountInfo body) throws Exception {
-        if (body.getLogin() != null && body.getPassword()!= null
-                && !userAccountInfoDAO.existsByLoginLike(body.getLogin()) && body.getUser() != null) {
-            User user = userDAO.save(body.getUser());
+    public ResponseEntity<String> registration(@RequestBody User body) throws Exception {
+        if (body.getEmail() != null && body.getPassword()!= null && body.getRole() != null
+                && !userDAO.existsByEmailLike(body.getEmail())) {
+            User user = new User();
+            user = userDAO.save(user);
 
-            userAccountInfoDAO.save(
-                    new UserAccountInfo(
-                            body.getLogin(),
+            userDAO.save(
+                    new User(
+                            body.getFirstName(),
+                            body.getLastName(),
+                            body.getEmail(),
                             passwordEncoder.encode(body.getPassword()),
-                            UserAccountInfo.Role.User,
-                            user
+                            body.getRole()
                     )
             );
         } else {
@@ -87,7 +84,7 @@ public class AuthController {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            body.getLogin(),
+                            body.getEmail(),
                             body.getPassword()
                     )
             );
@@ -97,7 +94,7 @@ public class AuthController {
         }
 
         final UserDetails userDetails = userDetailsService
-                .loadUserByUsername(body.getLogin());
+                .loadUserByUsername(body.getEmail());
 
         if (userDetails != null) {
             final String token = jwtUtils.generateToken(userDetails);

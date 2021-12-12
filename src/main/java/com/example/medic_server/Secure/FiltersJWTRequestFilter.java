@@ -1,6 +1,6 @@
 package com.example.medic_server.Secure;
 
-import com.example.medic_server.Models.UserAccountInfo;
+import com.example.medic_server.Models.User;
 import com.example.medic_server.Secure.Services.JWTUtils;
 import com.example.medic_server.Secure.Services.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ public class FiltersJWTRequestFilter extends OncePerRequestFilter {
 
         String userName = null;
         String jwt = null;
-        UserAccountInfo.Role role = null;
+        User.Role role = null;
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             jwt = authorizationHeader.substring(7);
@@ -47,7 +47,7 @@ public class FiltersJWTRequestFilter extends OncePerRequestFilter {
 
             if (jwtUtils.validateToken(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = null;
-                if (role == UserAccountInfo.Role.valueOf(userDetails.getAuthorities().iterator().next().getAuthority())) {
+                if (role == User.Role.valueOf(userDetails.getAuthorities().iterator().next().getAuthority())) {
                     usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                             userDetails, null, userDetails.getAuthorities()
                     );

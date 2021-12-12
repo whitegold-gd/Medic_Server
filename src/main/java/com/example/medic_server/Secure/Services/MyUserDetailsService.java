@@ -1,7 +1,6 @@
 package com.example.medic_server.Secure.Services;
 
-import com.example.medic_server.Database.DAO.UserAccountInfoDAO;
-import com.example.medic_server.Models.UserAccountInfo;
+import com.example.medic_server.Database.DAO.UserDAO;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,20 +13,21 @@ import java.util.Collections;
 @Service
 public class MyUserDetailsService implements UserDetailsService {
 
-    private final UserAccountInfoDAO userAccountInfoDAO;
+    private final UserDAO userDAO;
 
-    public MyUserDetailsService(UserAccountInfoDAO userAccountInfoDAO) {
-        this.userAccountInfoDAO = userAccountInfoDAO;
+    public MyUserDetailsService(UserDAO userDAO) {
+        this.userDAO = userDAO;
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserAccountInfo userAccountInfo = userAccountInfoDAO.findByLoginLike(username);
-        if (userAccountInfo != null){
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        com.example.medic_server.Models.User user = userDAO.findByEmail(email);
+        if (user != null){
             return new User(
-                userAccountInfo.getLogin(),
-                    userAccountInfo.getPassword(),
-                    Collections.singletonList(new SimpleGrantedAuthority(userAccountInfo.getRole().toString())));
+                    user.getEmail(),
+                    user.getPassword(),
+                    Collections.singletonList(new SimpleGrantedAuthority(user.getRole().toString()))) {
+            };
         } else {
             return null;
         }

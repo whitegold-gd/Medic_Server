@@ -1,11 +1,11 @@
 package com.example.medic_server.Secure.Services;
 
+import com.example.medic_server.Models.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import com.example.medic_server.Models.UserAccountInfo;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -14,7 +14,7 @@ import java.util.function.Function;
 
 @Service
 public class JWTUtils {
-    private String SECRET_KEY = "bjdfsdj@424jfd";
+    private String SECRET_KEY = "secret";
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -24,8 +24,8 @@ public class JWTUtils {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    public UserAccountInfo.Role extractRole(String token) {
-        return UserAccountInfo.Role.valueOf(extractAllClaims(token).get("role", String.class));
+    public User.Role extractRole(String token) {
+        return User.Role.valueOf(extractAllClaims(token).get("role", String.class));
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver){

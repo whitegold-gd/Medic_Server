@@ -37,10 +37,10 @@ public class UserController {
     }
 
     @PostMapping("/byToken")
-    ResponseEntity<UserPOJO> getInfoByToken(Authentication authentication) {
-        User user = userDAO.findByUserName(authentication.getName());
+    ResponseEntity<User> getInfoByToken(Authentication authentication) {
+        User user = userDAO.findByEmail(authentication.getName());
         if (user != null) {
-            return ResponseEntity.ok(new UserPOJO(user));
+            return ResponseEntity.ok(user);
         }
         return ResponseEntity.badRequest().build();
     }

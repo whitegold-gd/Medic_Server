@@ -3,19 +3,13 @@ package com.example.medic_server.Controllers;
 import com.example.medic_server.Database.DAO.PostDAO;
 import com.example.medic_server.Database.DAO.UserDAO;
 import com.example.medic_server.Models.Post;
-import com.example.medic_server.Models.UserAccountInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("post")

@@ -11,10 +11,8 @@ import java.util.UUID;
 @Repository
 public interface UserDAO extends JpaRepository<User, UUID> {
     User findByIdLike(UUID id);
-
-    @Query("SELECT u FROM User u WHERE u.userAccountInfo.id = (SELECT c.id FROM UserAccountInfo c WHERE c.login = :userName)")
-
-    User findByUserName(@Param("userName") String userName);
+    Boolean existsByEmailLike(@Param("email") String email);
+    User findByFirstName(@Param("firstName") String firstName);
 
     User findByEmail(@Param("email") String email);
 }
