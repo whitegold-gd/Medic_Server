@@ -25,6 +25,7 @@ public class JWTUtils {
     }
 
     public User.Role extractRole(String token) {
+        if (token.startsWith("Bearer ")) token = token.substring(7);
         return User.Role.valueOf(extractAllClaims(token).get("role", String.class));
     }
 

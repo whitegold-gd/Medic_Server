@@ -3,6 +3,9 @@ package com.example.medic_server.Controllers;
 import com.example.medic_server.Database.DAO.PostDAO;
 import com.example.medic_server.Database.DAO.UserDAO;
 import com.example.medic_server.Models.Post;
+import com.example.medic_server.Models.User;
+import com.example.medic_server.Secure.Services.JWTUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -17,6 +20,9 @@ public class PostController {
 
     private final PostDAO postDAO;
     private final UserDAO userDAO;
+
+    @Autowired
+    private JWTUtils jwtUtils;
 
     public PostController(PostDAO postDAO, UserDAO userDAO) {
         this.postDAO = postDAO;
@@ -36,14 +42,20 @@ public class PostController {
     }
 
     @GetMapping("/delete")
-    ResponseEntity<Boolean> deletePostById(@RequestParam UUID id){
-        if (postDAO.findByIdLike(id) != null) {
-            postDAO.deleteById(id);
-            System.out.println(id);
-            return ResponseEntity.ok(true);
+    ResponseEntity<Boolean> deletePostById(@RequestParam UUID id,
+                                           @RequestHeader("Authorization") String token){
+        if (jwtUtils.extractRole(token).equals(User.Role.Administrator) ||
+                jwtUtils.extractRole(token).equals(User.Role.Moderator)){
+            if (postDAO.findByIdLike(id) != null) {
+                postDAO.deleteById(id);
+                System.out.println(id);
+                return ResponseEntity.ok(true);
+            } else {
+                System.out.println("Not found");
+                return ResponseEntity.ok(false);
+            }
         } else {
-            System.out.println("Not found");
-            return ResponseEntity.ok(false);
+            return ResponseEntity.badRequest().build();
         }
     }
 

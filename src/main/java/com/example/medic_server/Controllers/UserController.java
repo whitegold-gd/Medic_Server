@@ -19,8 +19,8 @@ public class UserController {
     }
 
     @GetMapping("/byId")
-    ResponseEntity<User> getInfoById(@RequestParam UUID id){
-        User user = userDAO.findByIdLike(id);
+    ResponseEntity<User> getInfoById(@RequestParam String id){
+        User user = userDAO.findByIdLike(UUID.fromString(id));
         if (user != null){
             return ResponseEntity.ok(user);
         }

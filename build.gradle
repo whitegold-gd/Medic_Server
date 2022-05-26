@@ -29,7 +29,7 @@ dependencies {
 	//implementation 'org.springframework.security.oauth:spring-security-oauth-client'
 
 	//H2
-	implementation 'com.h2database:h2:1.4.200'
+	//implementation 'com.h2database:h2:1.4.200'
 
 	//JWT
 	implementation 'org.springframework.security:spring-security-jwt:1.1.1.RELEASE'
@@ -41,8 +41,13 @@ dependencies {
 	//Retrofit
 	implementation 'com.squareup.retrofit2:retrofit:2.9.0'
 	implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+	//PostgreSQL
+	runtimeOnly 'org.postgresql:postgresql:42.3.4'
+
+	implementation group: 'org.apache.tomcat', name: 'tomcat-jdbc', version: '10.0.5'
 }
 
-test {
+/*test {
 	useJUnitPlatform()
-}
+}*/
